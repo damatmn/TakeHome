@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TakeHome</string>
+    <string name="cat_content_desc">A random cat</string>
+    <string name="random_cat_endpoint_root">https://cataas.com/c</string>
 </resources>
