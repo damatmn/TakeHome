@@ -2,5 +2,7 @@
     <string name="app_name">TakeHome</string>
     <string name="cat_content_desc">A random cat</string>
     <string name="random_cat_endpoint_root">https://cataas.com/c?%1$d</string>
+    <string name="random_cat_endpoint_gif">https://cataas.com/c/gif?%1$d</string>
     <string name="new_cat_button">Get me a new cat!</string>
+    <string name="checkbox_text">Gifs Only</string>
 </resources>

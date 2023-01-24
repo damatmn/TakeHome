@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalGlideComposeApi::class)
+@file:OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
 
 package com.matthewleeshort.takehome
 
@@ -6,10 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,15 +25,22 @@ class MainActivity : ComponentActivity() {
             TakeHomeTheme {
 
                 var catCount by remember(0){ mutableStateOf(0) }
+                var gifs by remember(0){ mutableStateOf(false) }
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     ConstraintLayout {
-                        val (button) = createRefs()
+                        val (button, loader, checkBox, checkBoxText) = createRefs()
+                        CircularProgressIndicator(modifier = Modifier.constrainAs(loader){
+                            centerHorizontallyTo(parent)
+                            centerVerticallyTo(parent)
+                        })
                         GlideImage(
-                            model = getString(R.string.random_cat_endpoint_root).format(catCount),
+                            model = (if(gifs) getString(R.string.random_cat_endpoint_gif)
+                                     else     getString(R.string.random_cat_endpoint_root)
+                                    ).format(catCount),
                             contentDescription = getString(R.string.cat_content_desc),
                             ) {
                             it.diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -52,6 +56,13 @@ class MainActivity : ComponentActivity() {
                         }) {
                             Text(getString(R.string.new_cat_button))
                         }
+                        Checkbox(checked = gifs, onCheckedChange = {
+                            gifs = it
+                        }, modifier = Modifier.constrainAs(checkBox){})
+                        Text(getString(R.string.checkbox_text), modifier = Modifier.constrainAs(checkBoxText){
+                            start.linkTo(checkBox.end)
+                            centerVerticallyTo(checkBox)
+                        })
                     }
                 }
             }
