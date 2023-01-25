@@ -5,9 +5,14 @@ package com.matthewleeshort.takehome
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,7 +37,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     ConstraintLayout {
-                        val (button, loader, checkBox, checkBoxText) = createRefs()
+                        val (button, loader, checkbox) = createRefs()
                         CircularProgressIndicator(modifier = Modifier.constrainAs(loader){
                             centerHorizontallyTo(parent)
                             centerVerticallyTo(parent)
@@ -56,13 +61,22 @@ class MainActivity : ComponentActivity() {
                         }) {
                             Text(getString(R.string.new_cat_button))
                         }
-                        Checkbox(checked = gifs, onCheckedChange = {
-                            gifs = it
-                        }, modifier = Modifier.constrainAs(checkBox){})
-                        Text(getString(R.string.checkbox_text), modifier = Modifier.constrainAs(checkBoxText){
-                            start.linkTo(checkBox.end)
-                            centerVerticallyTo(checkBox)
-                        })
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.primaryContainer, shape = RoundedCornerShape(10.dp))
+                                .padding(16.dp).constrainAs(checkbox){
+                                    start.linkTo(parent.start, 16.dp)
+                                    top.linkTo(parent.top, 16.dp)
+                                }
+                        ) {
+                            CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
+                                Checkbox(checked = gifs, onCheckedChange = {
+                                    gifs = it
+                                }, modifier = Modifier.padding(end=16.dp) )
+                            }
+                            Text(getString(R.string.checkbox_text))
+                        }
                     }
                 }
             }
